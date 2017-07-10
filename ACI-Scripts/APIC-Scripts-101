@@ -1,0 +1,50 @@
+## Login into APIC ##
+
+POST -> https://<APIC IP>/api/aaaLogin.json
+
+{
+    "aaaUser" : {
+        "attributes" : {
+            "name" : "username",
+            "pwd" : "password"
+        }
+    }
+}
+
+## Create a Tenant and a VRF (XML) ##
+
+POST -> https://<APIC IP>/api/node/mo.xml
+
+<polUni>
+    <fvTenant name="ExampleApiTenant2">
+        <fvCtx name="myVRF"/>
+    </fvTenant>
+</polUni>
+
+## Create a Tenant, BD, Subnet and assign to VRF ##
+
+POAST -> https://<APIC IP>/api/node/mo.xml
+
+<polUni>
+
+    <fvTenant name="ExampleApiTenant" >
+
+        <fvBD name="myBD">
+
+            <fvRsCtx tnFvCtxName="myVRF" />
+
+            <fvSubnet ip="192.168.1.1/24" />
+
+        </fvBD>
+
+    </fvTenant>
+
+</polUni>
+
+## Go into specific BD tree and create subnet in ##
+
+POST -> https://<APIC IP>/api/node/mo/uni/tn-ExampleApiTenant/BD-myBD.xml
+
+<fvBD name="myBD">
+    <fvSubnet ip="192.168.3.1/24" />
+</fvBD>
